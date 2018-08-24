@@ -1,10 +1,9 @@
 <template>
-  <v-app green>
+  <v-app >
    
-    <v-toolbar fixed app color="green darken-5" >
+    <v-toolbar fixed app  color="primary" >
       <v-toolbar-side-icon></v-toolbar-side-icon>
-        <v-icon>remove</v-icon>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      <v-toolbar-title v-text="title" class="white--text"></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
         icon
@@ -13,10 +12,10 @@
         <v-icon>menu</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-content >
+    <v-content   class="primaryLight">
         <nuxt />
     </v-content>
-    <v-footer :fixed="fixed" app>
+    <v-footer :fixed="fixed" app color ="info">
       <span>&copy; 2017</span>
     </v-footer>
   </v-app>
