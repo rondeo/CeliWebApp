@@ -16,7 +16,7 @@ $ npm run build
 $ npm start
 
 # generate static project
-$ npm run generate
+$ npm run generate (takes a little bit of time but it is correct. Only work in a server)
 ```
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).

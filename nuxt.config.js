@@ -1,6 +1,8 @@
 const pkg = require('./package')
 
 const nodeExternals = require('webpack-node-externals')
+const axios = require('axios')
+
 
 module.exports = {
   mode: 'universal',
@@ -53,6 +55,19 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
   },
+
+  generate: {
+    routes: function () {
+      return axios.get('https://api.celicidad.net:8081/v1/business/slug/')
+      .then((res) => {
+         return res.data.map((slug) => {
+             return {
+                route: '/restaurante/' + slug
+             }
+         })
+      })
+     }
+ },
 
   /*
   ** Build configuration

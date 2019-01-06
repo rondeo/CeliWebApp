@@ -21,7 +21,7 @@
   <v-layout wrap>
      <template v-for="(item) in businesses"  v-if="item.id != ''">
        <v-flex xs12 md3 px-1 mb-1 v-bind:key="item.id"  >
-          <nuxt-link :to="{ path :'restaurante/' + item.id}" append v-bind:key="item.id">
+          <nuxt-link :to="{ path :'./restaurante/' + item.slug}" append v-bind:key="item.slug">
           <v-card>
              <v-card-media
                 class="white--text"
@@ -80,7 +80,8 @@ export default {
           name: "",
           city: ""
         }
-      ]
+      ],
+      search: null
     };
   },
   methods: {
@@ -94,7 +95,11 @@ export default {
             "https://api.celicidad.net:8081/v1/business/name/" + this.search + "/"
           )
           .then(result => {
+            let total = 0;
             this.businesses = result.data;
+            for(let i = 0; i <  this.businesses.length; i++){
+              this.businesses[i].average = Math.floor(this.businesses[i].average * 100) / 100;
+            }
             console.log(result);
           })
           .catch(e => console.log(e));
