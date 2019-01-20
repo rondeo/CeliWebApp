@@ -1,5 +1,46 @@
 <template >
-<v-container>
+<v-container xs12 pa-0>
+  <v-container xs12 mt-0  fill-height class="primary" background-color=primary>
+    <v-layout x12 row wrap >
+      <v-layout row ma-0 pa-0 xs12 md8 pt-0 >
+        <v-flex >
+          <v-card-text pt-0 mt-0  >
+            <v-layout mt-0 pt-0 > 
+              <span class="white--text subheading" > Opciones sin gluten en {{item.stateName}} / {{item.cityName}} / {{kind}} </span>
+            </v-layout>
+            <v-layout mt-4  > 
+              <span class="display-3 white--text">{{ item.name }}</span>
+            </v-layout>
+          </v-card-text>
+          <v-layout  mt-3 >
+            <img class="ml-3" v-if="item.bread == 'S'" src ="/bread.png" alt="Dispone de pan sin gluten">
+            <img class="ml-3" v-if="item.beer == 'S'" src ="/pint.png" alt="Dispone de cerveza sin gluten">
+            <img class="ml-3" v-if="item.dessert == 'S'" src ="/cake.png" alt="Dispone de postres sin gluten">
+            <img class="ml-3" v-if="item.dessert == 'S'" src ="/menu.png" alt="Dispone de menú sin gluten">
+          </v-layout>
+          <v-layout mt-2 ml-3 pt-0 > 
+            
+          </v-layout>
+        </v-flex>
+      </v-layout>
+      <v-layout row mt-2 pt-3  xs12 md4  >
+        <v-flex >
+          <v-layout justify-end  pr-2 v-if="item.votes > 0">
+              <span class="accent--text display-2 bold"  style="font-size: 40px !important;">{{ item.average }} </span><span class ="ml-2 white--text headline">  / 10</span>
+          </v-layout>
+          <v-layout justify-end  v-if="item.votes > 0">
+            <v-rating  v-model="item.midaverage" color="accent" background-color="accent" half-increments="true" length=5 readonly ></v-rating>
+          </v-layout>
+          <v-layout  justify-end  pr-2 mt-0 mb-0 pa-0 ma-0 v-if="item.votes > 0">
+              <span class="white--text body-1"> ( {{ item.votes }} opiniones ) </span>
+          </v-layout>
+          <v-layout justify-end text--md-end pa-0 ma-0  v-if="item.votes == 0">
+              <span class="white--text subheading"> Sin opiniones aún de este sitio </span>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    </v-layout>
+  </v-container>
   <v-container xs12 md12 pt-0 mt-0>
     <v-layout align-center justify-center row fill-height>
       <v-flex xs12 md12 >
@@ -13,21 +54,6 @@
             <v-container fill-height justify-end>
             <v-layout  justify-end>
               <v-flex xs12  justify-end class="text-xs-right">
-                <span class="primaryLight headline" style="font-size: 40px !important;" pa-3>{{ item.name }}</span>
-              </v-flex>
-            </v-layout>
-          </v-container>
-          </v-card-media>
-           <v-card-media
-            class="black--text"
-            height="400px"
-            src="/foto_generica.png" 
-            v-if="item.photo=='no'"
-            >
-            <v-container fill-height justify-end>
-            <v-layout justify-end>
-              <v-flex xs12  justify-end class="text-xs-right">
-                <span class="primaryLight headline" style="font-size: 40px !important;">{{ item.name }}</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -35,76 +61,34 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-container fluid grid-list-sm>
-      <v-layout row wrap > 
-      <v-flex xs12 md4 order-xs2 order-md1>
-      <v-layout column wrap>
-      <v-flex d-flex order-xs2 order-md1 >
-        <v-card>
-        {{ item.web}}
-        {{ item.phone}}
-        </v-card>
-      </v-flex>
-      <v-flex wrap d-flex v-bind="{ [`grid-list-${size}`]: true }" v-if="imagesCount > 0" order-xs4 order-md1>
-            <v-card 
-          height="100%" v-if="images != null">
-              <v-container ma-0 pa-0> 
-                    <v-layout ma-0 pa-0>
-                      <v-flex ma-0 pa-1 class="text-xs-right">
-                        <span class="primary--text bold"  v-if="images.length > 0">FOTOS DE VISITANTES</span>
-                      </v-flex>
-                    </v-layout>
-              </v-container>
-              <v-layout wrap mb-3>
-                <v-flex 
-                  v-for="(image) in images.slice(0, 4)"
-                  v-bind:key="image.id"
-                  xs6 pa-1
-                >
-                  <img :src=image.uri class="image" :alt=item.name width="100%" height="100%" hover>
-                </v-flex>
-              </v-layout>
-              <v-container ma-0 pa-0> 
-                    <v-layout ma-0 pa-0>
-                      <v-flex ma-0 pa-1 class="text-xs-right">
-                        <span class="primary--text bold"  v-if="images.length > 0">VER LAS {{ images.length }} FOTOS</span>
-                      </v-flex>
-                    </v-layout>
-              </v-container>
-            </v-card>
-          </v-flex>
-      <v-flex d-flex order-xs3 order-md1>
-        <v-card>
-        {{ item.web}}
-        {{ item.phone}}
-        {{ item.name }}
-        </v-card>
-      </v-flex>
-      </v-layout>
-      </v-flex> 
-      <v-flex d-flex xs12 md8 offset-xs0 order-xs1 order-md2>
-      <v-layout column wrap>
-      <v-flex d-flex>
-            <v-layout column wrap>
-              <v-flex d-flex>
-                <v-card >
-                  <v-layout  justify-end mt-3 ml-2>
-                    <v-flex xs8>
-                      <span class="headline" style="font-size: 40px !important;">{{ item.name }}</span>
-                    </v-flex>
-                    <v-flex xs class=text-xs-right mr-4>
-                      <span class="accent--text headline" style="font-size: 40px !important;">{{ item.average }}</span>
-                      
-                    </v-flex>
-                  </v-layout>
-                </v-card>
-              </v-flex>
+    <v-layout align-center justify-center row fill-height mt-0>
+      <v-flex d-flex xs12 >
+          <v-card class="pt-3">
+          <p v-if="item.comment != ''" class ="text-xs-center  pb-3 title">{{ item.comment}}</p>
+          <v-layout xs12 wrap justify-center >
+          <v-flex md3 xs12 ml-3 >
+            <v-layout fill-height align-center justify-center>
+            <p><img src ="/map.png"/></p>
+            <p class="subheading offset-xs3 ml-3"  align>{{item.address}}</p>
             </v-layout>
-           </v-flex>
-      </v-layout>
+          </v-flex>
+          <v-flex md3 xs12 ml-3 v-if="item.web != ' '" >
+            <v-layout fill-height align-center justify-center>
+            <p><a v-bind:href=item.web><img src ="/wifi.png"/></a></p>
+            <p class="subheading offset-xs3 ml-3"  align><a v-bind:href=item.web>  Visita su página web</a></p>
+            </v-layout>
+          </v-flex>
+          <v-flex md3 xs12 ml-3 v-if="item.phone != ' ' && item.phone != ''">
+            <v-layout fill-height align-center justify-center>
+            <p><img src ="/smartphone.png"/></p>
+            <p class="subheading offset-xs3 ml-3" align>{{item.phone}}</p>
+            </v-layout>
+          </v-flex>
+          </v-layout>
+          </v-card>
       </v-flex>
-      </v-layout>
-    </v-container>
+    </v-layout>
+
   </v-container>
   <v-btn
               relative
@@ -161,6 +145,7 @@ export default {
         .then(result => {
           this.item = result.data;
           this.item.average = Math.floor(result.data.average* 100) / 100;
+          this.item.midaverage = this.item.average/2;
           console.log(result);
         })
         .catch(e => console.log(e));

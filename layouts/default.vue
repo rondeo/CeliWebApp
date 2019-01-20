@@ -1,9 +1,9 @@
 <template>
   <v-app >
    
-    <v-toolbar fixed app  color="primary" >
+    <v-toolbar fixed app  color="primaryDark" >
       <v-toolbar-side-icon></v-toolbar-side-icon>
-      <v-toolbar-title v-text="title" class="white--text"></v-toolbar-title>
+      <v-toolbar-title v-text="title" class="white--text bold"></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
         icon

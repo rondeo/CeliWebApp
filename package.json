@@ -11,9 +11,9 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "nuxt": "^1.0.0",
-    "vuetify": "^0.17.3",
-    "@nuxtjs/axios": "^5.0.0"
+    "@nuxtjs/axios": "^5.0.0",
+    "nuxt": "^2.3.4",
+    "vuetify": "^1.4.2"
   },
   "devDependencies": {
     "cross-env": "^5.0.1",
