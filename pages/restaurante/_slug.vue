@@ -122,7 +122,7 @@ import axios from "axios";
 export default {
   head() {
     return {
-      titleTemplate: "%s"
+      titleTemplate: this.item.name + " - %s"
     }
   },
   components: {
