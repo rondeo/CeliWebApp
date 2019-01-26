@@ -6,10 +6,10 @@
         <v-flex >
           <v-card-text pt-0 mt-0  >
             <v-layout mt-0 pt-0 > 
-              <span class="white--text subheading" > Opciones sin gluten en {{item.stateName}} / {{item.cityName}} / {{kind}} </span>
+              <h3 class="white--text subheading" > Opciones sin gluten en {{item.stateName}} / {{item.cityName}} / {{kind}} </h3>
             </v-layout>
             <v-layout mt-4  > 
-              <span class="display-3 white--text">{{ item.name }}</span>
+              <h1 class="display-3 white--text bold">{{ item.name }}</h1>
             </v-layout>
           </v-card-text>
           <v-layout  mt-3 >
@@ -69,19 +69,28 @@
           <v-flex md3 xs12 ml-3 >
             <v-layout fill-height align-center justify-center>
             <p><img src ="/map.png"/></p>
-            <p class="subheading offset-xs3 ml-3"  align>{{item.address}}</p>
+            <div>
+              <h3 class="subheading bold offset-xs3 ml-3 mb-0"  align>DIRECCIÓN</h3>
+              <p class=".display-1 offset-xs3 ml-3 mt-0"  align>{{item.address}}</p>
+            </div>
             </v-layout>
           </v-flex>
           <v-flex md3 xs12 ml-3 v-if="item.web != ' '" >
             <v-layout fill-height align-center justify-center>
             <p><a v-bind:href=item.web><img src ="/wifi.png"/></a></p>
-            <p class="subheading offset-xs3 ml-3"  align><a v-bind:href=item.web>  Visita su página web</a></p>
+            <div>
+              <h3 class="subheading bold offset-xs3 ml-3 mb-0"  align>WEB</h3>
+              <p class=".display-1 offset-xs3 ml-3 mt-0"  align><a v-bind:href=item.web>  Visita su página web</a></p>
+            </div>
             </v-layout>
           </v-flex>
           <v-flex md3 xs12 ml-3 v-if="item.phone != ' ' && item.phone != ''">
             <v-layout fill-height align-center justify-center>
             <p><img src ="/smartphone.png"/></p>
-            <p class="subheading offset-xs3 ml-3" align>{{item.phone}}</p>
+            <div>
+              <h3 class="subheading bold offset-xs3 ml-3 mb-0"  align>TELEFONO</h3>
+              <p class="subheading offset-xs3 ml-3 mt-0" align>{{item.phone}}</p>
+            </div>
             </v-layout>
           </v-flex>
           </v-layout>
@@ -120,7 +129,11 @@ export default {
     Logo,
     VuetifyLogo
   },
-  data() {
+  async asyncData ({ params, error, payload }) {
+    if (payload) return { item: payload,
+      images: null,
+      imagesCount: 0 }
+    else
     return {
       item: 
         {

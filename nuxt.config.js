@@ -60,9 +60,10 @@ module.exports = {
     routes: function () {
       return axios.get('https://api.celicidad.net:8081/v1/business/slug/')
       .then((res) => {
-         return res.data.map((slug) => {
+         return res.data.map((item) => {
              return {
-                route: '/restaurante/' + slug
+                route: '/restaurante/' + item.slug,
+                payload: item
              }
          })
       })
