@@ -112,41 +112,73 @@
                 <h3 class=".display-1 bold primary--text text-xs-center">Ver las {{imagesCount}} imagenes</h3>
               </v-flex>
             </v-layout>
-            <v-layout xs12 mt-3 ml-4 id="comment" >
-              <v-flex md3 xs12 ml-4 >
-                <h2 class=".display-1 bold">{{item.votes}} opiniones</h2>
-              </v-flex>
-            </v-layout>
-            <v-layout xs12 wrap justify-center v-if="comments != null" >
-              <v-flex d-flex  >
-                 <v-layout xs12 mt-3  mb-0 justify-center wrap>
-                    <v-flex  ml-5 mr-5
-                      v-for="(comment) in comments"
-                      v-bind:key="comment.id" xs12 wrap
-                    >
-                      <v-card xs12 class="primaryLight" pl-5 >
-                        <v-flex xs12 pt-4 :class="{'ml-1 mr-1': $vuetify.breakpoint.smAndDown, 'ml-5 mr-5': $vuetify.breakpoint.mdAndUp}" >
-                          <v-layout fill-height align-center >
-                          <p><v-avatar ml-5 xs4 pl-5
-                          >
-                            <img :src=comment.avatar alt="avatar" v-if="comment.avatar!=null">
-                            <img src=/rounded.png alt="avatar" v-if="comment.avatar==null">
-                          </v-avatar></p>
-                          <v-flex ml-5 >
-                            <span class="title bold primary--text" >{{comment.firstName}} {{comment.lastName}}</span><br>
-                            <span class="caption" mt-0>{{comment.tim}}</span>
-                          </v-flex>
-                          </v-layout>
+            <v-flex xs12 md8 mt-3 ml-4 id="comment"  v-if="comments != null && item.votes > 0" wrap >
+                  <v-flex md3  ml-4 >
+                    <h2 class=".display-1 bold">{{item.votes}} opiniones</h2>
+                  </v-flex>
+                </v-flex>
+            <v-layout xs12 row wrap>
+              <v-flex xs12 md8 wrap v-if="comments != null && item.votes > 0">
+                <v-flex justify-left wrap  >
+                  <v-flex d-flex  wrap>
+                    <v-layout  mt-3  mb-0 justify-center wrap>
+                        <v-flex  ml-5 xs12 
+                          v-for="(comment) in comments"
+                          v-bind:key="comment.id" wrap
+                        >
+                          <v-card class="primaryLighter" pl-5 xs12 md8>
+                            <v-flex pt-4 :class="{'ml-1 ': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.mdAndUp}" >
+                              <v-layout fill-height align-center >
+                              <p><v-avatar ml-5 xs4 pl-5
+                              >
+                                <img :src=comment.avatar alt="avatar" v-if="comment.avatar!=null">
+                                <img src=/rounded.png alt="avatar" v-if="comment.avatar==null">
+                              </v-avatar></p>
+                              <v-flex ml-5 >
+                                <span class="title bold primary--text" >{{comment.firstName}} {{comment.lastName}}</span><br>
+                                <span class="caption" mt-0>{{comment.tim}}</span>
+                              </v-flex>
+                              </v-layout>
+                            </v-flex>
+                          </v-card>
+                          <v-card  >
+                            <v-flex mt-0 mb-4 ml-5 mr-5 pt-4 pb-4>
+                              <span class="body-1">{{comment.comment}}</span>
+                            </v-flex>
+                          </v-card>
                         </v-flex>
-                      </v-card>
-                      <v-card  >
-                        <v-flex mt-0 mb-4 ml-5 mr-5 pt-4 pb-4>
-                          <span class="body-1">{{comment.comment}}</span>
-                        </v-flex>
-                      </v-card>
-                    </v-flex>
-                 </v-layout>
+                    </v-layout>
+                  </v-flex>
+                </v-flex>
               </v-flex>
+                <v-flex xs12 md4 pl-5 pr-5 justify-center mt-5 mb-5>
+                  <v-flex class="primaryLighter" d-flex  v-if="nearBusiness != null"  >
+                    <v-card class="primaryLighter"  >
+                      <p class="title bold mt-3 justify-center text-xs-center" >Establecimientos Cercanos</p>
+                      <v-flex 
+                        v-for="(near) in nearBusiness.slice(0,5)"
+                        v-bind:key="near.id" wrap mb-4
+                      >
+                        <a :href="'/restaurante/' + near.slug"  style="text-decoration: none;">
+                        <v-layout fill-height ml-2 >
+                              <p><v-avatar ml-5 xs4 pl-5
+                              >
+                                <img :src=near.photo :alt=near.name v-if="near.photo!='no'">
+                                <img src=/rounded.png :alt=near.photo v-if="near.photo=='no'">
+                              </v-avatar></p>
+                              <v-flex ml-2 >
+                                <span class="accent--text bold" >{{near.name}}</span><br>
+                                <v-rating xs1 :v-model="near.average" color="accent" background-color="accent" half-increments length=5 readonly ><span class="body-1 black--text" mt-0>{{near.average}}</span></v-rating>
+                                <span class="body-1 black--text" mt-0>{{near.kindName}}</span>
+                                <p class="body-1 black--text text-xs-right   mr-2" mt-0>{{Math.floor(near.distance* 100) / 100}} km</p>
+                              </v-flex>
+                        </v-layout>
+                        </a>
+    
+                      </v-flex>
+                    </v-card>
+                  </v-flex>
+                </v-flex>
             </v-layout>
           </v-card>
       </v-flex>
@@ -186,7 +218,9 @@ export default {
   async asyncData ({ params, error, payload }) {
     if (payload) return { item: payload,
       images: null,
-      imagesCount: 0 }
+      imagesCount: 0,
+      comments: null,
+      nearBusiness: null }
     else
     return {
       item: 
@@ -197,7 +231,8 @@ export default {
         },
       images: null,
       imagesCount: 0,
-      comments: null
+      comments: null,
+      nearBusiness: null
     };
   },
   async beforeMount () {
@@ -233,6 +268,15 @@ export default {
         )
         .then(result => {
           this.comments = result.data;
+          console.log(result);
+        })
+        .catch(e => console.log(e));
+      axios
+        .get(
+          "https://api.celicidad.net:8081/v1/coordinates/near/" + this.$route.params.slug + "/"
+        )
+        .then(result => {
+          this.nearBusiness = result.data;
           console.log(result);
         })
         .catch(e => console.log(e));
