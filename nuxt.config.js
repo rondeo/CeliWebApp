@@ -54,6 +54,12 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+      baseURL: process.env.API_URL || 'http://api.celicidad.net:8081/',
+      redirectError: {
+        401: '/login',
+        404: '/notfound'
+      },
+    https: true
   },
 
   generate: {
