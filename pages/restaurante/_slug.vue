@@ -94,36 +94,36 @@
                 </v-layout>
               </v-flex>
             </v-layout>
-            <v-layout xs12 wrap justify-center v-if="imagesCount > 0" >
+            <v-layout xs12 wrap justify-center v-if="$store.state.image.list.length > 0" >
               <v-flex xs12 >
                  <v-layout wrap mt-3  mb-0 justify-center>
                     <v-flex 
-                      v-for="(image) in images.slice(0, 4)"
+                      v-for="(image) in $store.state.image.list.slice(0, 4)"
                       v-bind:key="image.id"
                       xs6 md2 pl-1 pr-1  mb-0 wrap :class="{'ml-0 mr-0': $vuetify.breakpoint.smAndDown, 'ml-3 mr-3': $vuetify.breakpoint.mdAndUp}"
                     >
-                      <img  mb-0 :src=image.uri style="border-radius: 15px;" class="image" :alt=state.business.business.name width="100%" height="150" hover>
+                      <img  mb-0 :src=image.uri style="border-radius: 15px;" class="image" :alt=$store.state.business.business.name width="100%" height="150" hover>
                     </v-flex>
                   </v-layout>
               </v-flex>
             </v-layout>
-            <v-layout xs12 wrap mt-0 mr-4 v-if="imagesCount > 0" justify-center >
+            <v-layout xs12 wrap mt-0 mr-4 v-if="$store.state.image.list.length > 0" justify-center >
               <v-flex md3 xs12 ml-4 >
-                <h3 class=".display-1 bold primary--text text-xs-center">Ver las {{imagesCount}} imagenes</h3>
+                <h3 class=".display-1 bold primary--text text-xs-center">Ver las {{$store.state.image.list.length}} imagenes</h3>
               </v-flex>
             </v-layout>
-            <v-flex xs12 md8 mt-3 ml-4 id="comment"  v-if="comments != null && $store.state.business.business.votes > 0" wrap >
+            <v-flex xs12 md8 mt-3 ml-4 id="comment"  v-if=" this.$store.state.comment.list.length > 0 && $store.state.business.business.votes > 0" wrap >
                   <v-flex md3  ml-4 >
                     <h2 class=".display-1 bold">{{$store.state.business.business.votes}} opiniones</h2>
                   </v-flex>
                 </v-flex>
             <v-layout xs12 row wrap>
-              <v-flex xs12 md8 wrap v-if="comments != null && $store.state.business.business.votes > 0">
+              <v-flex xs12 md8 wrap v-if="this.$store.state.comment.list.length > 0 && $store.state.business.business.votes > 0">
                 <v-flex justify-left wrap  >
                   <v-flex d-flex  wrap>
                     <v-layout  mt-3  mb-0 justify-center wrap>
                         <v-flex  ml-5 xs12 
-                          v-for="(comment) in comments"
+                          v-for="(comment) in this.$store.state.comment.list"
                           v-bind:key="comment.id" wrap
                         >
                           <v-card class="primaryLighter" pl-5 xs12 md8>
@@ -152,14 +152,14 @@
                 </v-flex>
               </v-flex>
                 <v-flex xs12 md4 pl-5 pr-5 justify-center mt-5 mb-5>
-                  <v-flex class="primaryLighter" d-flex  v-if="nearBusiness != null"  >
+                  <v-flex class="primaryLighter" d-flex  v-if="$store.state.nearbusiness.list.length > 0"  >
                     <v-card class="primaryLighter"  >
                       <p class="title bold mt-3 justify-center text-xs-center" >Establecimientos Cercanos</p>
                       <v-flex 
-                        v-for="(near) in nearBusiness.slice(0,5)"
+                        v-for="(near) in $store.state.nearbusiness.list.slice(0,5)"
                         v-bind:key="near.id" wrap mb-4
                       >
-                        <a :href="'/restaurante/' + near.slug"  style="text-decoration: none;">
+                        <nuxt-link :to="{ path :'/restaurante/' + near.slug}" append v-bind:key="near.slug"  style="text-decoration: none;">
                         <v-layout fill-height ml-2 >
                               <p><v-avatar ml-5 xs4 pl-5
                               >
@@ -173,7 +173,7 @@
                                 <p class="body-1 black--text text-xs-right   mr-2" mt-0>{{Math.floor(near.distance* 100) / 100}} km</p>
                               </v-flex>
                         </v-layout>
-                        </a>
+                        </nuxt-link>
     
                       </v-flex>
                     </v-card>
@@ -216,11 +216,7 @@ export default {
     VuetifyLogo
   },
   async asyncData ({ params, error, payload }) {
-    if (payload) return { item: payload,
-      images: null,
-      imagesCount: 0,
-      comments: null,
-      nearBusiness: null }
+    if (payload) return { item: payload}
     else
     return {
       item: 
@@ -228,15 +224,14 @@ export default {
           id: "",
           name: "",
           city: ""
-        },
-      images: null,
-      imagesCount: 0,
-      comments: null,
-      nearBusiness: null
+        }
     };
   },
   async fetch({ store, params  }) {
-    const item = await store.dispatch('business/show', {slug: params.slug});
+    await store.dispatch('business/show', {slug: params.slug});
+    await store.dispatch('nearbusiness/get', {slug: params.slug});
+    await store.dispatch('comment/get', {slug: params.slug});
+    await store.dispatch('image/get', {slug: params.slug});
   },
   async beforeMount () {
     await this.load();
@@ -244,34 +239,6 @@ export default {
   methods: {
     load() {
       console.log(this.search);     
-      axios
-        .get(
-          "/v1/image/business/slug/" + this.$route.params.slug + "/"
-        )
-        .then(result => {
-          this.images = result.data;
-          this.imagesCount = result.data.length;
-          console.log(result);
-        })
-        .catch(e => console.log(e));
-      axios
-        .get(
-          "/v1/comment/business/slug/" + this.$route.params.slug + "/"
-        )
-        .then(result => {
-          this.comments = result.data;
-          console.log(result);
-        })
-        .catch(e => console.log(e));
-      axios
-        .get(
-          "/v1/coordinates/near/" + this.$route.params.slug + "/"
-        )
-        .then(result => {
-          this.nearBusiness = result.data;
-          console.log(result);
-        })
-        .catch(e => console.log(e));
     }
   }
 };
