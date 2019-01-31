@@ -122,29 +122,34 @@
                 <v-flex justify-left wrap  >
                   <v-flex d-flex  wrap>
                     <v-layout  mt-3  mb-0 justify-center wrap>
-                        <v-flex  ml-5 xs12 
+                        <v-flex  ml-5 xs12 mr-5 mt-2
                           v-for="(comment) in this.$store.state.comment.list"
                           v-bind:key="comment.id" wrap
                         >
                           <v-card class="primaryLighter" pl-5 xs12 md8>
                             <v-flex pt-4 :class="{'ml-1 ': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.mdAndUp}" >
-                              <v-layout fill-height align-center >
+                              <v-layout fill-height>
                               <p><v-avatar ml-5 xs4 pl-5
                               >
                                 <img :src=comment.avatar alt="avatar" v-if="comment.avatar!=null">
                                 <img src=/rounded.png alt="avatar" v-if="comment.avatar==null">
                               </v-avatar></p>
-                              <v-flex ml-5 >
-                                <span class="title bold primary--text" >{{comment.firstName}} {{comment.lastName}}</span><br>
+                              <v-flex ml-3 >
+                                <span class="title bold primaryDark--text" >{{comment.firstName}} {{comment.lastName}}</span><br>
                                 <span class="caption" mt-0>{{comment.tim}}</span>
                               </v-flex>
                               </v-layout>
                             </v-flex>
                           </v-card>
                           <v-card  >
-                            <v-flex mt-0 mb-4 ml-5 mr-5 pt-4 pb-4>
+                            <v-layout>
+                            <v-flex mt-0 mb-4 ml-5  pt-4 pb-4>
                               <span class="body-1">{{comment.comment}}</span>
                             </v-flex>
+                            <v-flex mt-0 mb-4 mr-5 pt-4 pb-4 justify-right text-xs-right>
+                              <span class="display-1 primaryDark--text bold" justify-right text-xs-right>{{comment.rating}}</span>
+                            </v-flex>
+                            </v-layout>
                           </v-card>
                         </v-flex>
                     </v-layout>
@@ -152,26 +157,28 @@
                 </v-flex>
               </v-flex>
                 <v-flex xs12 md4 pl-5 pr-5 justify-center mt-5 mb-5>
-                  <v-flex class="primaryLighter" d-flex  v-if="$store.state.nearbusiness.list.length > 0"  >
+                  <v-flex class="white" d-flex  v-if="$store.state.nearbusiness.list.length > 0"  >
                     <v-card class="primaryLighter"  >
-                      <p class="title bold mt-3 justify-center text-xs-center" >Establecimientos Cercanos</p>
+                      <p class="title bold mt-3 justify-center text-xs-center primaryLighter" >Establecimientos Cercanos</p>
                       <v-flex 
                         v-for="(near) in $store.state.nearbusiness.list.slice(0,5)"
-                        v-bind:key="near.id" wrap mb-4
+                        v-bind:key="near.id" wrap mb-2 ma-0 pa-0 class="primaryLighter"
                       >
                         <nuxt-link :to="{ path :'/restaurante/' + near.slug}" append v-bind:key="near.slug"  style="text-decoration: none;">
-                        <v-layout fill-height ml-2 >
+                        <v-layout fill-height ml-2 align-center mt-0 mb-0 >
+                          <v-layout>
                               <p><v-avatar ml-5 xs4 pl-5
                               >
                                 <img :src=near.photo :alt=near.name v-if="near.photo!='no'">
                                 <img src=/rounded.png :alt=near.photo v-if="near.photo=='no'">
                               </v-avatar></p>
                               <v-flex ml-2 >
-                                <span class="accent--text bold" >{{near.name}}</span><br>
-                                <v-rating xs1 :v-model="near.average" color="accent" background-color="accent" half-increments length=5 readonly ><span class="body-1 black--text" mt-0>{{near.average}}</span></v-rating>
+                                <span class="accent--text bold subheading" >{{near.name}}</span><br>
                                 <span class="body-1 black--text" mt-0>{{near.kindName}}</span>
-                                <p class="body-1 black--text text-xs-right   mr-2" mt-0>{{Math.floor(near.distance* 100) / 100}} km</p>
+                                <v-layout class="body-1 black--text  mb-0 mr-2" mt-0 mb-0><v-flex class=" text-xs-left body-2">{{Math.floor(near.distance* 100) / 100}} km</v-flex></v-layout>
                               </v-flex>
+                          </v-layout>
+                          <v-flex class=" text-xs-right primaryDark--text bold title" mr-2 v-if="near.votes>0"> {{Math.floor(near.average* 100) / 100}}</v-flex>
                         </v-layout>
                         </nuxt-link>
     
