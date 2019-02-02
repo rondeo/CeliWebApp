@@ -19,7 +19,8 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato;Roboto:300,400,500,700|Material+Icons' }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Nunito:300,400,500,700' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Material+Icons' }
     ]
   },
 
@@ -54,17 +55,18 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-      baseURL: process.env.API_URL || 'http://api.celicidad.net:8081/',
+      baseURL: process.env.API_URL || 'http://api.celicidad.net:8081/v1/',
       redirectError: {
         401: '/login',
         404: '/notfound'
       },
-    https: true
+      https: true,
+      ssr: false
   },
 
   generate: {
     routes: function () {
-      return axios.get('https://api.celicidad.net:8081/v1/business/slug/')
+      let businesses = axios.get('https://api.celicidad.net:8081/v1/business/slug/')
       .then((res) => {
          return res.data.map((item) => {
              return {
@@ -72,6 +74,18 @@ module.exports = {
                 payload: item
              }
          })
+      })
+      let states = axios.get('https://api.celicidad.net:8081/v1/state/')
+      .then((res) => {
+         return res.data.map((item) => {
+             return {
+                route: '/provincia/' + item.slug,
+                payload: item
+             }
+         })
+      })
+      return Promise.all([businesses, states]).then(values => {
+          return [...values[0], ...values[1]]
       })
      }
  },

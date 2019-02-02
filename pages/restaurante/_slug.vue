@@ -6,7 +6,7 @@
         <v-flex >
           <v-card-text pt-0 mt-0  >
             <v-layout mt-0 pt-0 > 
-              <h3 class="white--text subheading" > Opciones sin gluten en {{$store.state.business.business.stateName}} / {{$store.state.business.business.cityName}} / {{$store.state.business.business.kindName}} </h3>
+              <h3 class="white--text subheading" >  <nuxt-link class="white--text subheading" style="text-decoration: none;" :to="{ path :'/provincia/' + $store.state.business.business.stateSlug}">Opciones sin gluten en {{$store.state.business.business.stateName}} </nuxt-link> / {{$store.state.business.business.cityName}} / {{$store.state.business.business.kindName}} </h3>
             </v-layout>
             <v-layout mt-2  > 
               <h1 class="display-3 white--text bold">{{$store.state.business.business.name}}</h1>
@@ -17,6 +17,7 @@
             <img class="ml-3" v-if="$store.state.business.business.beer == 'S'" src ="/pint.png" alt="Dispone de cerveza sin gluten">
             <img class="ml-3" v-if="$store.state.business.business.dessert == 'S'" src ="/cake.png" alt="Dispone de postres sin gluten">
             <img class="ml-3" v-if="$store.state.business.business.dessert == 'S'" src ="/menu.png" alt="Dispone de menú sin gluten">
+            <img class="ml-3" v-if="$store.state.business.business.face == 'S'" src ="/stamp.png" alt="Tiene acuerdo con Asociación de celiacos">
           </v-layout>
           <v-layout mt-2 ml-3 pt-0 > 
             
@@ -121,33 +122,31 @@
               <v-flex xs12 md8 wrap v-if="this.$store.state.comment.list.length > 0 && $store.state.business.business.votes > 0">
                 <v-flex justify-left wrap  >
                   <v-flex d-flex  wrap>
-                    <v-layout  mt-3  mb-0 justify-center wrap>
-                        <v-flex  ml-5 xs12 mr-5 mt-2
+                    <v-layout mb-5 justify-center wrap>
+                        <v-flex  ml-5 xs12 mr-5 mt-2 mb-3 
                           v-for="(comment) in this.$store.state.comment.list"
                           v-bind:key="comment.id" wrap
                         >
-                          <v-card class="primaryLighter" pl-5 xs12 md8>
-                            <v-flex pt-4 :class="{'ml-1 ': $vuetify.breakpoint.smAndDown, 'ml-5': $vuetify.breakpoint.mdAndUp}" >
+                          <v-card xs12 md8 mt-3 elevation-0>
+                            <v-flex pt-3 :class="{'ml-1': $vuetify.breakpoint.smAndDown, 'ml-2': $vuetify.breakpoint.mdAndUp}" >
                               <v-layout fill-height>
-                              <p><v-avatar ml-5 xs4 pl-5
+                              <p><v-avatar ml-5 xs4
                               >
                                 <img :src=comment.avatar alt="avatar" v-if="comment.avatar!=null">
                                 <img src=/rounded.png alt="avatar" v-if="comment.avatar==null">
                               </v-avatar></p>
                               <v-flex ml-3 >
-                                <span class="title bold primaryDark--text" >{{comment.firstName}} {{comment.lastName}}</span><br>
+                                <span class="title bold primary--text" >{{comment.firstName}} {{comment.lastName}}</span><br>
                                 <span class="caption" mt-0>{{comment.tim}}</span>
+                              </v-flex>
+                              <v-flex mt-0 mb-4 mr-5 justify-right text-xs-right>
+                                <span class="display-1 primaryLight--text bold" justify-right text-xs-right>{{comment.rating}}</span>
                               </v-flex>
                               </v-layout>
                             </v-flex>
-                          </v-card>
-                          <v-card  >
                             <v-layout>
-                            <v-flex mt-0 mb-4 ml-5  pt-4 pb-4>
+                            <v-flex mt-0 mb-4 ml-4 mr-4 >
                               <span class="body-1">{{comment.comment}}</span>
-                            </v-flex>
-                            <v-flex mt-0 mb-4 mr-5 pt-4 pb-4 justify-right text-xs-right>
-                              <span class="display-1 primaryDark--text bold" justify-right text-xs-right>{{comment.rating}}</span>
                             </v-flex>
                             </v-layout>
                           </v-card>
@@ -164,8 +163,8 @@
                         v-for="(near) in $store.state.nearbusiness.list.slice(0,5)"
                         v-bind:key="near.id" wrap mb-2 ma-0 pa-0 class="primaryLighter"
                       >
-                        <nuxt-link :to="{ path :'/restaurante/' + near.slug}" append v-bind:key="near.slug"  style="text-decoration: none;">
-                        <v-layout fill-height ml-2 align-center mt-0 mb-0 >
+                        <nuxt-link :to="{ path :'/restaurante/' + near.slug}" v-bind:key="near.slug"  style="text-decoration: none;">
+                        <v-layout fill-height ml-2 align-center mt-3 mb-2 >
                           <v-layout>
                               <p><v-avatar ml-5 xs4 pl-5
                               >

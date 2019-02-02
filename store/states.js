@@ -3,22 +3,20 @@ import assign from 'lodash.assign';
 
 export const state = () => ({
   list: [],
-  business: {},
+  stateUnique: {},
 });
 
 export const mutations = {
-  set(state, business) {
-    state.list = business
+  set(state, stateUnique) {
+    state.stateUnique = stateUnique
   }
 };
 
 export const actions = {
   async get({commit}, params) {
-    await this.$axios.get(`/coordinates/near/${params.slug}/`)
+    await this.$axios.get(`/state/${params.value}/`)
       .then((res) => {
         if (res.status === 200) {
-          res.data.average = Math.floor(res.data.average* 100) / 100;
-          res.data.midaverage = res.data.average/2;
           commit('set', res.data)
         }
       })

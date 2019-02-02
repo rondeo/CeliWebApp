@@ -34,12 +34,22 @@ export const actions = {
       })
   },
   async show({commit}, params) {
-    await this.$axios.get(`/v1/business/slug/${params.slug}/`)
+    await this.$axios.get(`/business/slug/${params.slug}/`)
       .then((res) => {
         if (res.status === 200) {
             res.data.average = Math.floor(res.data.average* 100) / 100;
             res.data.midaverage = res.data.average/2;
             commit('mergebusiness', res.data)
+        }
+      })
+  },
+  async getByState({commit}, params) {
+    var businessSearch= {}
+    businessSearch.stateSlug = params.value
+    await this.$axios.post(`/business/0/-99999/`, businessSearch)
+      .then((res) => {
+        if (res.status === 200) {
+          commit('set', res.data.bussinesses)
         }
       })
   },
