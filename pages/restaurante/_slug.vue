@@ -120,7 +120,7 @@
                 </v-flex>
             <v-layout xs12 row wrap>
               <v-flex xs12 md8 wrap v-if="this.$store.state.comment.list.length > 0 && $store.state.business.business.votes > 0">
-                <v-flex justify-left wrap  >
+                <v-flex justify-left wrap mb-0 pb-0  >
                   <v-flex d-flex  wrap>
                     <v-layout mb-5 justify-center wrap>
                         <v-flex  ml-5 xs12 mr-5 mt-2 mb-3 
@@ -154,6 +154,14 @@
                     </v-layout>
                   </v-flex>
                 </v-flex>
+                <div class="text-xs-center" mt-0 pt-0>
+                  <v-pagination
+                    v-model=currentPage
+                    value=currentPage
+                    :length=($store.state.business.business.votes/10)+1
+                    @input="onPageChange"
+                  ></v-pagination>
+                </div>
               </v-flex>
                 <v-flex xs12 md4 pl-5 pr-5 justify-center mt-5 mb-5>
                   <v-flex class="white" d-flex  v-if="$store.state.nearbusiness.list.length > 0"  >
@@ -221,6 +229,9 @@ export default {
     Logo,
     VuetifyLogo
   },
+  data() {
+    return { currentPage: 1}
+    },
   async asyncData ({ params, error, payload }) {
     if (payload) return { item: payload}
     else
@@ -236,15 +247,21 @@ export default {
   async fetch({ store, params  }) {
     await store.dispatch('business/show', {slug: params.slug});
     await store.dispatch('nearbusiness/get', {slug: params.slug});
-    await store.dispatch('comment/get', {slug: params.slug});
+    await store.dispatch('comment/get', {slug: params.slug, element: 0});
     await store.dispatch('image/get', {slug: params.slug});
   },
   async beforeMount () {
     await this.load();
   },
+  mounted() {
+    this.loadComments();
+  },
   methods: {
-    load() {
-      console.log(this.search);     
+    loadComments() {
+      this.$store.dispatch('comment/get', {slug: this.$store.state.business.business.slug, element: this.currentPage - 1});  
+    },
+    onPageChange() {
+      this.loadComments();
     }
   }
 };

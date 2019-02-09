@@ -9,8 +9,8 @@
         <v-card xs12 wrap style="border-radius: 15px;">
             <v-layout xs12 wrap fill-height>
                 <v-flex xs12 md4>
-                    <v-img :src=business.photo style="border-top-left-radius: 15px;border-bottom-left-radius: 15px;" max-height="250" :alt=business.name  :aspect-ratio="9/9"  v-if="business.photo!='no'" ></v-img>
-                    <v-img src=/rounded.png style="border-top-left-radius: 15px;border-bottom-left-radius: 15px;" max-height="250" :alt=business.name  :aspect-ratio="9/9" v-if="business.photo=='no'"></v-img>
+                    <v-img :src=business.photo :style="{'border-top-left-radius: 15px border-top-right-radius: 15px':$vuetify.breakpoint.smAndDown, 'border-top-left-radius: 15px border-bottom-left-radius: 15px   ': $vuetify.breakpoint.mdAndUp}" max-height="250" :alt=business.name  :aspect-ratio="9/9"  v-if="business.photo!='no'" ></v-img>
+                    <v-img src=/rounded.png :style="{'border-top-left-radius: 15px border-top-right-radius: 15px':$vuetify.breakpoint.smAndDown, 'border-top-left-radius: 15px border-bottom-left-radius: 15px': $vuetify.breakpoint.mdAndUp}"  max-height="250" :alt=business.name  :aspect-ratio="9/9" v-if="business.photo=='no'"></v-img>
                 </v-flex>
                  <v-flex xs12 md6 :class="{'ml-1 mr-1': $vuetify.breakpoint.smAndDown, 'ml-5 mr-5': $vuetify.breakpoint.mdAndUp}">
                     <v-layout>
