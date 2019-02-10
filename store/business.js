@@ -53,6 +53,16 @@ export const actions = {
         }
       })
   },
+  async getByCity({commit}, params) {
+    var businessSearch= {}
+    businessSearch.citySlug = params.value
+    await this.$axios.post(`/business/0/-99999/`, businessSearch)
+      .then((res) => {
+        if (res.status === 200) {
+          commit('set', res.data.bussinesses)
+        }
+      })
+  },
   async set({commit}, business) {
     await commit('set', business)
   },

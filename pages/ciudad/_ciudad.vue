@@ -9,15 +9,15 @@ import axios from "axios";
 export default {
     head() {
         return {
-        titleTemplate: "Restaurantes sin gluten en la provincia de " + this.$store.state.states.stateUnique.name + " - Celicidad"
+        titleTemplate: "Restaurantes sin gluten en la ciudad de " + this.$store.state.city.city.name + " - Celicidad"
         }
     },
     components: {
         ListBusiness
     },
     async fetch({ store, params  }) {
-        await store.dispatch('business/getByState', {value: params.provincia});
-        await store.dispatch('states/get', {value: params.provincia});
+        await store.dispatch('business/getByCity', {value: params.ciudad});
+        await store.dispatch('city/get', {value: params.ciudad});
     },
     async beforeMount () {
         await this.load();

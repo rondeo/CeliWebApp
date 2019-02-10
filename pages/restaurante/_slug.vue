@@ -6,7 +6,7 @@
         <v-flex >
           <v-card-text pt-0 mt-0  >
             <v-layout mt-0 pt-0 > 
-              <h3 class="white--text subheading" >  <nuxt-link class="white--text subheading" style="text-decoration: none;" :to="{ path :'/provincia/' + $store.state.business.business.stateSlug}">Opciones sin gluten en {{$store.state.business.business.stateName}} </nuxt-link> / {{$store.state.business.business.cityName}} / {{$store.state.business.business.kindName}} </h3>
+              <h3 class="white--text subheading" >  <nuxt-link class="white--text subheading" style="text-decoration: none;" :to="{ path :'/provincia/' + $store.state.business.business.stateSlug}">Opciones sin gluten en {{$store.state.business.business.stateName}} </nuxt-link> / <nuxt-link class="white--text subheading" style="text-decoration: none;" :to="{ path :'/ciudad/' + $store.state.business.business.citySlug}">{{$store.state.business.business.cityName}}</nuxt-link> / {{$store.state.business.business.kindName}} </h3>
             </v-layout>
             <v-layout mt-2  > 
               <h1 class="display-3 white--text bold">{{$store.state.business.business.name}}</h1>
@@ -185,7 +185,7 @@
                                 <v-layout class="body-1 black--text  mb-0 mr-2" mt-0 mb-0><v-flex class=" text-xs-left body-2">{{Math.floor(near.distance* 100) / 100}} km</v-flex></v-layout>
                               </v-flex>
                           </v-layout>
-                          <v-flex class=" text-xs-right primaryDark--text bold title" mr-2 v-if="near.votes>0"> {{Math.floor(near.average* 100) / 100}}</v-flex>
+                          <v-flex class=" text-xs-right primaryDark--text bold title" mr-2 v-if="near.votes>0 && near.average < 999"> {{Math.floor(near.average* 100) / 100}}</v-flex>
                         </v-layout>
                         </nuxt-link>
     
@@ -249,9 +249,6 @@ export default {
     await store.dispatch('nearbusiness/get', {slug: params.slug});
     await store.dispatch('comment/get', {slug: params.slug, element: 0});
     await store.dispatch('image/get', {slug: params.slug});
-  },
-  async beforeMount () {
-    await this.load();
   },
   mounted() {
     this.loadComments();
