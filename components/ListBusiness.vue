@@ -1,10 +1,11 @@
 <template >
 <div id="ListBusiness">
 <v-container xs12 pa-0>
+    <v-layout x12 row wrap  align-center justify-center>
     <v-flex 
         v-for="(business) in $store.state.business.list"
         v-bind:key="business.id"
-        xs12 mt-2 wrap :class="{'ml-1 mr-1': $vuetify.breakpoint.smAndDown, 'ml-5 mr-5': $vuetify.breakpoint.mdAndUp}"
+       xs12 md10 mt-2 :class="{'ml-1 mr-1': $vuetify.breakpoint.smAndDown, 'ml-1 mr-1': $vuetify.breakpoint.mdAndUp}"
     >
          <nuxt-link  :to="{ path :'/restaurante/' + business.slug}" style="text-decoration: none;" append>
         <v-card xs12 wrap style="border-radius: 15px;">
@@ -34,6 +35,7 @@
         </v-card>
          </nuxt-link>
     </v-flex>
+    </v-layout>
 </v-container>
 </div>
 </template>

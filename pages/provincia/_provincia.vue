@@ -1,5 +1,11 @@
 <template >
+    <v-layout x12 row wrap  align-center justify-center>
+            <v-layout x12 row wrap  align-center justify-center>
+                <h1>{{$store.state.business.list.size}}</h1>
+                <h1>aaaa</h1>
+            </v-layout>
     <ListBusiness></ListBusiness>
+    </v-layout>
 </template>
 
 <script>
