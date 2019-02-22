@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "cookie": "^0.3.1",
+    "js-cookie": "^2.2.0",
     "lodash": "^4.17.11",
     "lodash.assign": "^4.2.0",
     "lodash.merge": "^4.6.1",

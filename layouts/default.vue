@@ -1,17 +1,72 @@
 <template>
   <v-app >
    
-    <v-toolbar fixed app  color="primaryDark" >
-      <v-toolbar-side-icon></v-toolbar-side-icon>
+    <v-toolbar dark fixed app  color="primaryDark" >
+      <v-toolbar-side-icon  @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title" class="white--text bold"></v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>menu</v-icon>
-      </v-btn>
+      <v-spacer ></v-spacer>
+      <v-toolbar-items v-if="$store.state.auth.user!=null">
+         <v-btn class="white--text bold" flat>
+           <v-layout  class="hidden-sm-and-down ">
+             {{ $store.state.auth.user.firstName}} {{ $store.state.auth.user.lastName}} 
+           </v-layout>
+           <v-layout ml-2>
+            <v-avatar ml-5 xs3 mr-4>
+              <img :src=$store.state.auth.user.avatar alt="avatar" v-if="$store.state.auth.user.avatar!=null">
+              <img src=/rounded.png alt="avatar" v-if="$store.state.auth.user.avatar==null">
+            </v-avatar>
+           </v-layout>
+         </v-btn>
+      </v-toolbar-items>
+      <v-toolbar-items v-if="$store.state.auth.user==null">
+         <v-btn class="white--text bold" flat>
+           <v-layout  class="hidden-sm-and-down ">
+             INICIA SESIÓN
+           </v-layout>
+           <v-layout ml-2>
+            <v-avatar ml-5 xs3 mr-4>
+              <img src=/rounded.png alt="avatar">
+            </v-avatar>
+           </v-layout>
+         </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
+    <v-navigation-drawer
+      v-model="drawer"
+      temporary
+      absolute
+    >
+      <v-toolbar flat class="primaryDark" v-if="$store.state.auth.user!=null" pt-4 >
+        <v-list class="pa-0">
+          <v-list-tile avatar>
+            <v-list-tile-avatar>
+              <img :src="$store.state.auth.user.avatar">
+            </v-list-tile-avatar>
+
+            <v-list-tile-content>
+              <v-list-tile-title class="white--text bold">{{ $store.state.auth.user.firstName}} {{ $store.state.auth.user.lastName}} </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-toolbar>
+     <v-list class="pt-0" dense>
+        <v-divider></v-divider>
+
+        <v-list-tile
+          v-for="item in items"
+          :key="item.title"
+          @click=""
+        >
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
     <v-content   class="primaryLight">
         <nuxt />
     </v-content>
@@ -26,14 +81,14 @@
     data() {
       return {
         clipped: false,
-        drawer: true,
+        drawer: false,
         fixed: false,
         items: [
           { icon: 'apps', title: 'Welcome', to: '/' },
           { icon: 'bubble_chart', title: 'Inspire', to: '/inspire' }
         ],
         miniVariant: false,
-        right: true,
+        right: false,
         rightDrawer: false,
         title: 'Celicidad'
       }
