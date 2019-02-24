@@ -26,7 +26,7 @@
       </v-layout>
       <v-layout row mt-2 pt-3  xs12 md4  >
         <v-flex >
-          <v-layout justify-end  pr-2 v-if="$store.state.business.business.votes > 0">
+          <v-layout justify-end  pr-2 v-if="$store.state.business.business.votes > 0" id="rating">
               <span class="accent--text display-2 bold"  style="font-size: 40px !important;">{{ $store.state.business.business.average }} </span><span class ="ml-2 white--text headline">  / 10</span>
           </v-layout>
           <v-layout justify-end  v-if="$store.state.business.business.votes > 0">
@@ -68,7 +68,7 @@
           <p v-if="$store.state.business.business.comment != ''" class ="text-xs-center pt-3 pb-3 title">{{ $store.state.business.business.comment}}</p>
             <v-layout xs12 wrap justify-center >
               <v-flex md3 xs12 ml-3 >
-                <v-layout fill-height align-center justify-center>
+                <v-layout fill-height  :class="{'align-left justify-left': $vuetify.breakpoint.smAndDown, 'align-center justify-center': $vuetify.breakpoint.mdAndUp}">
                 <p><img src ="/map.png"/></p>
                 <div>
                   <h3 class="subheading bold offset-xs3 ml-3 mb-0"  align>DIRECCIÓN</h3>
@@ -77,7 +77,7 @@
                 </v-layout>
               </v-flex>
               <v-flex md3 xs12 ml-3 v-if="$store.state.business.business.web != ' '" >
-                <v-layout fill-height align-center justify-center>
+                <v-layout fill-height  :class="{'align-left justify-left': $vuetify.breakpoint.smAndDown, 'align-center justify-center': $vuetify.breakpoint.mdAndUp}">
                 <p><a v-bind:href=$store.state.business.business.web><img src ="/wifi.png"/></a></p>
                 <div>
                   <h3 class="subheading bold offset-xs3 ml-3 mb-0"  align>WEB</h3>
@@ -86,7 +86,7 @@
                 </v-layout>
               </v-flex>
               <v-flex md3 xs12 ml-3 v-if="$store.state.business.business.phone != ' ' && $store.state.business.business.phone != ''">
-                <v-layout fill-height align-center justify-center>
+                <v-layout fill-height :class="{'align-left justify-left': $vuetify.breakpoint.smAndDown, 'align-center justify-center': $vuetify.breakpoint.mdAndUp}">
                 <p><img src ="/smartphone.png"/></p>
                 <div>
                   <h3 class="subheading bold offset-xs3 ml-3 mb-0"  align>TELEFONO</h3>
@@ -120,15 +120,15 @@
                 </v-flex>
             <v-layout xs12 row wrap>
               <v-flex xs12 md8 wrap v-if="this.$store.state.comment.list.length > 0 && $store.state.business.business.votes > 0">
-                <v-flex justify-left wrap mb-0 pb-0  >
-                  <v-flex d-flex  wrap>
+                <v-flex justify-left wrap  >
+                  <v-flex d-flex  wrap >
                     <v-layout mb-5 justify-center wrap>
                         <v-flex  ml-5 xs12 mr-5 mt-2 mb-3 
                           v-for="(comment) in this.$store.state.comment.list"
                           v-bind:key="comment.id" wrap
                         >
                           <v-card xs12 md8 mt-3 elevation-0>
-                            <v-flex pt-3 :class="{'ml-1': $vuetify.breakpoint.smAndDown, 'ml-2': $vuetify.breakpoint.mdAndUp}" >
+                            <v-flex pt-3 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-2': $vuetify.breakpoint.mdAndUp}" >
                               <v-layout fill-height>
                               <p><v-avatar ml-5 xs4
                               >
@@ -154,14 +154,15 @@
                     </v-layout>
                   </v-flex>
                 </v-flex>
-                <div class="text-xs-center" mt-0 pt-0>
-                  <v-pagination
+                <v-flex class="text-xs-center" mt-0 pt-0 ma-0 pa-0>
+                  <v-pagination ma-0 pa-0
                     v-model=currentPage
                     value=currentPage
-                    :length=($store.state.business.business.votes/10)+1
+                    :length=Math.floor(($store.state.business.business.votes/10)+1)
                     @input="onPageChange"
+                    :total-visible="4"
                   ></v-pagination>
-                </div>
+                </v-flex>
               </v-flex>
                 <v-flex xs12 md4 pl-5 pr-5 justify-center mt-5 mb-5>
                   <v-flex class="white" d-flex  v-if="$store.state.nearbusiness.list.length > 0"  >

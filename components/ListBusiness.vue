@@ -5,7 +5,7 @@
     <v-flex 
         v-for="(business) in $store.state.business.list"
         v-bind:key="business.id"
-       xs12 md10 mt-2 :class="{'ml-1 mr-1': $vuetify.breakpoint.smAndDown, 'ml-1 mr-1': $vuetify.breakpoint.mdAndUp}"
+       xs12 md10 mt-2 :class="{'ml-2 mr-2': $vuetify.breakpoint.smAndDown, 'ml-1 mr-1': $vuetify.breakpoint.mdAndUp}"
     >
          <nuxt-link  :to="{ path :'/restaurante/' + business.slug}" style="text-decoration: none;" append>
         <v-card xs12 wrap style="border-radius: 15px;">

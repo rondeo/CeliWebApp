@@ -1,7 +1,7 @@
 <template>
 <v-container xs12>
-  <v-layout wrap center xs12>
-      <v-flex  xs12 md6 px-1>
+  <v-layout wrap center xs12  mb-0 pb-0>
+      <v-flex  xs12 md6 px-1  mb-0 pb-0>
         <v-text-field v-on:keyup="onChange" v-model="search"
                 label="Busca tu restaurante sin gluten"
                 persistent-hint
@@ -10,12 +10,30 @@
                 />
       </v-flex>
        <v-flex   xs12 md6  px-1>
-        <v-text-field 
+        <v-text-field v-on:keyup="onCity" v-model="searchCity" mb-0 pb-0
                 label="Busca en una localidad en concreto"
                 persistent-hint
                 color="orange"
                 box
                 />
+          <v-card v-if="cities!=null" mt-0 pt-0>
+            <v-list class="pt-0" dense>
+              <v-divider></v-divider>
+              <v-list-tile
+                v-for="city in cities"
+                :key="city.key"   
+                :to="{ path : city.key }"             
+              >
+                <v-list-tile-action pl-0 ml-0>
+                  <v-icon color="accent">search</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ city.value }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-card>
       </v-flex>
   </v-layout>
   <v-layout wrap>
@@ -81,7 +99,9 @@ export default {
           city: ""
         }
       ],
-      search: null
+      cities: null,
+      search: null,
+      searchCity: null
     };
   },
   methods: {
@@ -90,6 +110,8 @@ export default {
       if (this.search == "") {
         this.businesses = null;
       } else {
+        this.searchCity = null;
+        this.cities = null;
         axios
           .get(
             "https://api.celicidad.net:8081/v1/business/name/" + this.search + "/"
@@ -100,6 +122,24 @@ export default {
             for(let i = 0; i <  this.businesses.length; i++){
               this.businesses[i].average = Math.floor(this.businesses[i].average * 100) / 100;
             }
+            console.log(result);
+          })
+          .catch(e => console.log(e));
+      }
+    },
+  onCity(){
+      console.log(this.search);
+      if (this.searchCity == "") {
+        this.cities = null;
+      } else {
+        this.search = null;
+        this.businesses = null;
+        axios
+          .get(
+            "https://api.celicidad.net:8081/v1/city/name/" + this.searchCity + "/"
+          )
+          .then(result => {
+            this.cities = result.data;
             console.log(result);
           })
           .catch(e => console.log(e));

@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 export function setAuthToken (token) {
   axios.defaults.headers.common['x-access-token'] = token
   axios.defaults.headers.common['Authorization'] = token
