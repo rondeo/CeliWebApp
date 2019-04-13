@@ -128,7 +128,7 @@
                           v-bind:key="comment.id" wrap
                         >
                           <v-card xs12 md8 mt-3 elevation-0>
-                            <v-flex pt-3 :class="{'ml-0': $vuetify.breakpoint.smAndDown, 'ml-2': $vuetify.breakpoint.mdAndUp}" >
+                            <v-flex pt-3 :class="{'ml-1': $vuetify.breakpoint.smAndDown, 'ml-2': $vuetify.breakpoint.mdAndUp}" >
                               <v-layout fill-height>
                               <p><v-avatar ml-5 xs4
                               >

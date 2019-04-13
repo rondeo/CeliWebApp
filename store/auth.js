@@ -14,7 +14,7 @@ export const state = () => ({
   }
   export const actions = {
     async fetch ({commit}) {
-        await this.$axios.get('/auth/user/')
+        await this.$axios.get('/api/auth/user/')
         .then(response => {
           commit('set_user', response.data)
           return response
@@ -25,7 +25,7 @@ export const state = () => ({
         })
     },
     async login ({commit}, data) {
-       await this.$axios.post('/auth/token/', data)
+       await this.$axios.post('/api/auth/token/', data)
         .then(response => {
           commit('set_user', response.data.token)
           setAuthToken(response.data.token)

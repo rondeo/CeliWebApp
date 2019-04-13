@@ -62,7 +62,12 @@ module.exports = {
         404: '/notfound'
       },
       https: true,
-      ssr: false
+      ssr: false,
+      proxy: true // Can be also an object with default options
+  },
+
+  proxy: {
+    '/api/': { target: 'https://api.celicidad.net:8081/v1/', pathRewrite: {'^/api/': ''} }
   },
 
   generate: {

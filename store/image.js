@@ -14,7 +14,7 @@ export const mutations = {
 
 export const actions = {
   async get({commit}, params) {
-    await this.$axios.get(`/image/business/slug/${params.slug}/`)
+    await this.$axios.get(`/api/image/business/slug/${params.slug}/`)
       .then((res) => {
         if (res.status === 200) {
           commit('set', res.data)

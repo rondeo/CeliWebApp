@@ -34,7 +34,7 @@ export const actions = {
       })
   },
   async show({commit}, params) {
-    await this.$axios.get(`/business/slug/${params.slug}/`)
+    await this.$axios.get(`/api/business/slug/${params.slug}/`)
       .then((res) => {
         if (res.status === 200) {
             res.data.average = Math.floor(res.data.average* 100) / 100;
@@ -46,7 +46,7 @@ export const actions = {
   async getByState({commit}, params) {
     var businessSearch= {}
     businessSearch.stateSlug = params.value
-    await this.$axios.post(`/business/0/-99999/`, businessSearch)
+    await this.$axios.post(`/api/business/0/-99999/`, businessSearch)
       .then((res) => {
         if (res.status === 200) {
           commit('set', res.data.bussinesses)
@@ -56,7 +56,7 @@ export const actions = {
   async getByCity({commit}, params) {
     var businessSearch= {}
     businessSearch.citySlug = params.value
-    await this.$axios.post(`/business/0/-99999/`, businessSearch)
+    await this.$axios.post(`/api/business/0/-99999/`, businessSearch)
       .then((res) => {
         if (res.status === 200) {
           commit('set', res.data.bussinesses)
@@ -73,12 +73,12 @@ export const actions = {
     await commit('add', business)
   },
   create({commit}, params) {
-    return this.$axios.post(`/business`, {business: params})
+    return this.$axios.post(`/api/business`, {business: params})
   },
   update({commit}, params) {
-    return this.$axios.put(`/business/${params.id}`, {business: params})
+    return this.$axios.put(`/api/business/${params.id}`, {business: params})
   },
   delete({commit}, params) {
-    return this.$axios.delete(`/business/${params.id}`)
+    return this.$axios.delete(`/api/business/${params.id}`)
   }
 };

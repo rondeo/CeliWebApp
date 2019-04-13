@@ -14,7 +14,7 @@ export const mutations = {
 
 export const actions = {
   async get({commit}, params) {
-    await this.$axios.get(`/coordinates/near/${params.slug}/`)
+    await this.$axios.get(`/api/coordinates/near/${params.slug}/`)
       .then((res) => {
         if (res.status === 200) {
           res.data.average = Math.floor(res.data.average* 100) / 100;
