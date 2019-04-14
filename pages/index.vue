@@ -114,7 +114,7 @@ export default {
         this.cities = null;
         axios
           .get(
-            "https://api.celicidad.net:8081/v1/business/name/" + this.search + "/"
+            "/api/business/name/" + this.search + "/"
           )
           .then(result => {
             let total = 0;
@@ -136,7 +136,7 @@ export default {
         this.businesses = null;
         axios
           .get(
-            "https://api.celicidad.net:8081/v1/city/name/" + this.searchCity + "/"
+            "/api/city/name/" + this.searchCity + "/"
           )
           .then(result => {
             this.cities = result.data;

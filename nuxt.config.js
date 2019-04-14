@@ -56,7 +56,6 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-      baseURL: process.env.API_URL || 'https://api.celicidad.net:8081/v1/',
       redirectError: {
         401: '/login',
         404: '/notfound'
@@ -72,7 +71,7 @@ module.exports = {
 
   generate: {
     routes: function () {
-      let businesses = axios.get('https://api.celicidad.net:8081/v1/business/slug/')
+      let businesses = axios.get('/api/business/slug/')
       .then((res) => {
          return res.data.map((item) => {
              return {
@@ -81,7 +80,7 @@ module.exports = {
              }
          })
       })
-      let states = axios.get('https://api.celicidad.net:8081/v1/state/')
+      let states = axios.get('/api/state/')
       .then((res) => {
          return res.data.map((item) => {
              return {
