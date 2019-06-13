@@ -1,45 +1,27 @@
 <template>
   <section class="section">
-    <div class="container">
-      <div class="columns">
-        <div class="column is-4 is-offset-4">
-          <h2 class="title has-text-centered">Login!</h2>
-
-          <Notification :message="error" v-if="error"/>
-
-          <form method="post" @submit.prevent="login">
-            <div class="field">
-              <label class="label">Email</label>
-              <div class="control">
-                <input
-                  type="email"
-                  class="input"
-                  name="email"
-                  v-model="email"
-                  required
-                >
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Password</label>
-              <div class="control">
-                <input
-                  type="password"
-                  class="input"
-                  name="password"
-                  v-model="password"
-                  required
-                >
-              </div>
-            </div>
-            <div class="control">
-              <button type="submit" class="button is-dark is-fullwidth">Login</button>
-            </div>
-          </form>
-
-        </div>
-      </div>
-    </div>
+     <v-container fluid fill-height>
+    <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12">
+              <v-toolbar dark color="primary">
+                <v-toolbar-title>Celicidad</v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+              <v-form method="post" @submit.prevent="login">
+              <v-card-text>
+                  <v-text-field v-model="email" prepend-icon="person" name="email" label="E-mail" type="text"></v-text-field>
+                  <v-text-field  v-model="password" prepend-icon="lock" name="password" label="Password" id="password" type="password"></v-text-field>
+                </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn type="submit" color="primary">Login</v-btn>
+              </v-card-actions>
+            </v-form>
+            </v-card>
+          </v-flex>
+        </v-layout>
+     </v-container>
   </section>
 </template>
 

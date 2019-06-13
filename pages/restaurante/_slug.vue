@@ -154,13 +154,13 @@
                     </v-layout>
                   </v-flex>
                 </v-flex>
-                <v-flex class="text-xs-center" mt-0 pt-0 ma-0 pa-0>
+                <v-flex class="text-xs-center" mt-0 pt-0 ma-0 pa-0  v-if=" Math.floor(($store.state.business.business.votes/10)) > 0">
                   <v-pagination ma-0 pa-0
                     v-model=currentPage
                     value=currentPage
                     :length=Math.floor(($store.state.business.business.votes/10)+1)
                     @input="onPageChange"
-                    :total-visible="4"
+                    :total-visible="5"
                   ></v-pagination>
                 </v-flex>
               </v-flex>

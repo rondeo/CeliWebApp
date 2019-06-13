@@ -104,7 +104,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-content   class="primaryLight">
+    <v-content   class="primaryLighter">
         <nuxt />
     </v-content>
     <v-footer   color ="info">
