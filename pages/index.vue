@@ -1,6 +1,6 @@
-<template>
+<template >
 <v-container xs12>
-  <v-layout wrap center xs12  mb-0 pb-0>
+  <v-layout wrap center xs12   mb-0 pb-0>
       <v-flex  xs12 md6 px-1  mb-0 pb-0>
         <v-text-field v-on:keyup="onChange" v-model="search"
                 label="Busca tu restaurante sin gluten"
@@ -39,7 +39,7 @@
   <v-layout wrap>
      <template v-for="(item) in businesses"  v-if="item.id != ''">
        <v-flex xs12 md3 px-1 mb-1 v-bind:key="item.id"  >
-          <nuxt-link :to="{ path :'./restaurante/' + item.slug}" append v-bind:key="item.slug">
+          <nuxt-link style="text-decoration:none" :to="{ path :'./restaurante/' + item.slug}" append v-bind:key="item.slug">
           <v-card>
              <v-card-media
                 class="white--text"
@@ -65,7 +65,7 @@
                   {{item.average}}
                 </v-layout>
              </v-card-media>
-              <v-container fill-height fluid ma-0>
+              <v-container fill-height fluid ma-0 >
                 <v-layout row fill-height wrap>
                   <v-flex xs12 align-end flexbox>
                     <span class="headline" v-text="item.name"></span><br>{{item.cityName}} ({{item.stateName}})                    

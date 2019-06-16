@@ -104,11 +104,11 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-content   class="primaryLighter">
+    <v-content   class="white">
         <nuxt />
     </v-content>
     <v-footer   color ="info">
-      <span>&copy; 2017</span>
+      <span>&copy; 2019</span>
     </v-footer>
   </v-app>
 </template>
