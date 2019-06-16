@@ -61,18 +61,50 @@
           <v-flex xs12 md4>
             <v-layout xs12 wrap justify-center v-if="$store.state.image.list.length > 0" >
               <v-flex xs12 >
-                 <v-layout wrap ma-0 pa-0 justify-left>
+                 <v-layout wrap ma-0 pa-0 justify-left >
                     <v-flex d-flex 
-                      v-for="(image) in $store.state.image.list.slice(0, 4)"
+                      v-for="(image,index) in $store.state.image.list.slice(0, 4)"
                       v-bind:key="image.id"
                       xs6 md6 pa-0 wrap :class="{'ma-0': $vuetify.breakpoint.smAndDown, 'ma-0': $vuetify.breakpoint.mdAndUp}"
-                    >
-                      <img  :src=image.uri class="image ma-0 pa-0" :alt=$store.state.business.business.name width="100%" height="200px" hover>
+                    >     
+                    <v-flex ma-0 pa-0 d-flex>       
+                      <v-layout align-baseline justify-center>       
+                        <v-img  :src=image.uri class="image ma-0 pa-0" :alt=$store.state.business.business.name width="100%" height="200px" hover>
+                        <v-layout v-if="(index == 3 && morePhotos.length == 0)" style="height: 100%;" align-end justify-center >
+                          <v-btn class="primary"  @click="clickPhotos()">Ver más fotos</v-btn>
+                        </v-layout>
+                        </v-img>
+                      </v-layout>
+                    </v-flex>
                     </v-flex>
                   </v-layout>
               </v-flex>
             </v-layout>
           </v-flex>
+          </v-layout>
+          <v-layout xs12 wrap>
+            <v-layout xs12 wrap justify-center v-if="($store.state.image.list.length > 4 && this.showPhotos==true)" >
+              <v-flex xs12 >
+                 <v-layout wrap ma-0 pa-0 justify-left >
+                    <v-flex d-flex 
+                      v-for="(image, index2) in morePhotos"
+                      v-bind:key="image.id"
+                      xs3 pa-0 wrap :class="{'ma-0': $vuetify.breakpoint.smAndDown, 'ma-0': $vuetify.breakpoint.mdAndUp}"
+                    >
+                    <v-layout align-baseline justify-center>    
+                      <v-img :src=image.uri class="image ma-0 pa-0" :alt=$store.state.business.business.name width="100%" height="200px" hover>
+                      <v-layout v-if="(index2 == morePhotos.length - 1 && morePhotos.length + 4 < $store.state.image.list.length)" style="height: 100%;" align-end justify-center >
+                        <v-btn class="primary"  @click="clickPhotos()">Ver más fotos</v-btn>
+                      </v-layout>
+                      <v-layout v-if="(index2 % 8 == 4 && index2 > morePhotos.length -8) || (index2 == morePhotos.length && index2 % 8 < 4)" style="height: 100%;" align-end justify-center >
+                        <v-btn class="accent"  @click="hidePhotos()">Ocultar fotos</v-btn>
+                      </v-layout>
+                      </v-img>
+                    </v-layout>
+                    </v-flex>
+                  </v-layout>
+              </v-flex>
+            </v-layout>
           </v-layout>
         </v-card>
     </v-flex>
@@ -115,10 +147,19 @@
       <v-flex xs12>
         <v-card class="elevation-20" pt-4>
         <v-flex  xs12 md8 mt-3 ml-4 id="comment"  v-if=" this.$store.state.comment.list.length > 0 && $store.state.business.business.votes > 0" wrap >
-                  <v-flex md3 mt-3 ml-4 >
+          <v-layout xs12 row wrap>
+                  <v-flex xs6 mt-3 ml-4 >
                     <h2 class=".display-1 bold pt-3">{{$store.state.business.business.votes}} opiniones</h2>
                   </v-flex>
+                <v-layout  align-end justify-end>
+                <v-flex d-flex  mt-3 align-end justify-end> 
+                  <v-btn class="primary justify-end" @click="comment()">
+                    Escribe una opinión
+                  </v-btn>
                 </v-flex>
+                </v-layout>
+          </v-layout>
+            </v-flex>
             <v-layout xs12 row wrap>
               <v-flex xs12 md8 wrap v-if="this.$store.state.comment.list.length > 0 && $store.state.business.business.votes > 0">
                 <v-flex justify-left wrap  >
@@ -232,7 +273,14 @@ export default {
     VuetifyLogo
   },
   data() {
-    return { currentPage: 1}
+    return { 
+      currentPage: 1,
+      showPhotos: false,
+      alert: true,
+      fromIndexPhotos: -4,
+      toIndexPhotos: 4,
+      morePhotos: []
+      }
     },
   async asyncData ({ params, error, payload }) {
     if (payload) return { item: payload}
@@ -261,6 +309,29 @@ export default {
     },
     onPageChange() {
       this.loadComments();
+    },
+    comment() {
+      if (this.$store.state.auth.user==null){
+        this.$router.push({ name: 'login', query: { redirect: '/login' } });
+      } else {
+        this.$router.push({
+          path: './' + this.$store.state.business.business.slug + '/comment'
+        });
+      }
+    },
+    clickPhotos(){
+      this.fromIndexPhotos = 4;
+      this.toIndexPhotos = this.toIndexPhotos + 8;
+      this.extractExtraPhotos();
+    },
+    hidePhotos(){
+      this.fromIndexPhotos = -4;
+      this.toIndexPhotos = 4;
+      this.extractExtraPhotos();
+    },
+    extractExtraPhotos(){
+      this.morePhotos = this.$store.state.image.list.slice(this.fromIndexPhotos, this.toIndexPhotos);
+      this.showPhotos = this.fromIndexPhotos > 0;
     }
   }
 };

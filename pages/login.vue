@@ -59,9 +59,10 @@ export default {
       })
       await this.$store.dispatch('auth/fetch')
         .then(result => {
-          this.$router.push({
-                  path: '/'
-              })
+          
+           this.$router.push({
+                  path: this.$router.back()
+              }) 
         })
       } catch (e) {
         this.error = e.response

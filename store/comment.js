@@ -9,6 +9,9 @@ export const state = () => ({
 export const mutations = {
   set(state, business) {
     state.list = business
+  },
+  merge(state, form) {
+    assign(state.comment, form)
   }
 };
 
@@ -18,6 +21,14 @@ export const actions = {
       .then((res) => {
         if (res.status === 200) {
           commit('set', res.data)
+        }
+      })
+  },
+  async getFromUser({commit}, params) {
+    await this.$axios.get(`/api/comment/business/${params.slug}/user/${params.unique_id}/`)
+      .then((res) => {
+        if (res.status === 200) {
+          commit('merge', res.data)
         }
       })
   }
