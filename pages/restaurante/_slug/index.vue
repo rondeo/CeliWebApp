@@ -219,17 +219,25 @@
                                     <span class="title bold primary--text" >{{comment.firstName}} {{comment.lastName}}</span><br>
                                     <span class="caption" mt-0>{{comment.tim}}</span>
                                   </v-flex>
-                                  <v-flex mt-0 mb-4 :class="{'mr-2': $vuetify.breakpoint.smAndDown, 'mr-5': $vuetify.breakpoint.mdAndUp}" justify-right text-xs-right>
+                                  <v-flex mt-0 mb-0 :class="{'mr-2': $vuetify.breakpoint.smAndDown, 'mr-5': $vuetify.breakpoint.mdAndUp}" justify-right text-xs-right>
                                     <span class="display-1 primaryLight--text bold" justify-right text-xs-right>{{comment.rating}}</span>
                                   </v-flex>
                                   </v-layout>
                                 </v-flex>
                                 <v-layout>
-                                <v-flex mt-0 mb-4 ml-4 mr-4 >
+                                <v-flex mt-4 mb-0 ml-4 mr-4 v-if="comment.comment != null && comment.comment.length > 1">
                                   <span class="body-1">{{comment.comment}}</span>
                                 </v-flex>
                                 </v-layout>
-                                <v-layout justify-center >
+                                <v-layout  mt-4 mb-0 ml-4 justify-center align-center v-if="comment.images.length > 0">
+                                   <v-flex  xs10  
+                                      v-for="(image) in comment.images.slice(0,3)"
+                                      v-bind:key="image.value" wrap xs4
+                                    >
+                                      <v-img  :src=image.value class="image ma-1 pa-2" :alt=$store.state.business.business.name  height="100px" hover/>
+                                   </v-flex>
+                                </v-layout>
+                                <v-layout mt-4 justify-center >
                                   <v-flex xs6>
                                     <v-divider class="primaryLight"></v-divider>
                                   </v-flex>
@@ -323,10 +331,7 @@ export default {
       alert: true,
       fromIndexPhotos: -4,
       toIndexPhotos: 4,
-      morePhotos: [],
-         markers: [{
-          position: {lat: 10.0, lng: 10.0}
-        }]
+      morePhotos: []
       }
     },
   async asyncData ({ params, error, payload }) {

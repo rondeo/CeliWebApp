@@ -4,14 +4,21 @@ import assign from 'lodash.assign';
 export const state = () => ({
   list: [],
   business: {},
+  total: null
 });
 
 export const mutations = {
   set(state, business) {
     state.list = business
   },
+  setTotal(state, total) {
+    state.total = total
+  },
   add(state, value) {
     merge(state.list, value)
+  },
+  push(state,value){
+    state.list.push(value)
   },
   remove(state, {business}) {
     state.list.filter(c => business.id !== c.id)
@@ -45,21 +52,41 @@ export const actions = {
   },
   async getByState({commit}, params) {
     var businessSearch= {}
-    businessSearch.stateSlug = params.value
-    await this.$axios.post(`/api/business/0/-99999/`, businessSearch)
+    businessSearch.stateSlug = params.value.provincia
+    await this.$axios.post(`/api/business/${params.value.element}/30/`, businessSearch)
       .then((res) => {
         if (res.status === 200) {
           commit('set', res.data.bussinesses)
         }
       })
   },
+  async setTotalSearchState({commit}, params) {
+    var businessSearch= {}
+    businessSearch.stateSlug = params.value
+    await this.$axios.post(`/api/business/0/-99999/`, businessSearch)
+      .then((res) => {
+        if (res.status === 200) {
+          commit('setTotal', res.data.total)
+        }
+      })
+  },
   async getByCity({commit}, params) {
+    var businessSearch= {}
+    businessSearch.citySlug = params.value.ciudad
+    await this.$axios.post(`/api/business/${params.value.element}/30/`, businessSearch)
+      .then((res) => {
+        if (res.status === 200) {
+          commit('set', res.data.bussinesses)
+        }
+      })
+  },
+  async setTotalSearchCity({commit}, params) {
     var businessSearch= {}
     businessSearch.citySlug = params.value
     await this.$axios.post(`/api/business/0/-99999/`, businessSearch)
       .then((res) => {
         if (res.status === 200) {
-          commit('set', res.data.bussinesses)
+          commit('setTotal', res.data.total)
         }
       })
   },
