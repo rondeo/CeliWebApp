@@ -43,18 +43,18 @@
     </v-layout>
   </v-container>
   <v-container xs12 md12 pt-0 mt-0>
-    <v-layout align-center justify-center row fill-heiht mt-2>
+    <v-layout align-center justify-center row fill-heiht mt-1>
       <v-flex xs12>
-        <v-card class="elevation-20" pt-4>
+        <v-card class="elevation-20" pt-2>
         <v-layout xs12 align-center justify-center  mt-4 pt-4>
            <v-flex xs12 md8 align-center justify-center>
             <p class="display-1 black--text bold align-center justify-center">Tu opinión sobre {{$store.state.business.business.name}}</p>
-           <form  method="post" xs12  mt-4 pt-4 >
+           <form  method="post" xs12  mt-4 pt-4  >
              <v-card-text xs12 mt-4>
-                  <v-textarea  data-vv-name="comment" v-validate="'max:1000'" v-model="$store.state.comment.comment.comment"  name="comment" label="Tu Opinión" type="text" :counter=1000></v-textarea>
+                  <v-textarea  data-vv-name="comment" v-validate="'max:1000'" v-model="comment.comment"  name="comment" label="Tu Opinión" type="text" :counter=1000></v-textarea>
                   <v-flex mt-3 pt-3>
                    <v-slider mt-3 pt-3
-                    v-model="$store.state.comment.comment.rating"
+                    v-model="comment.rating"
                     label="Valoracion"
                     thumb-color="accent"
                     :max="10"
@@ -62,7 +62,9 @@
                   ></v-slider>
                   </v-flex>
               </v-card-text>
-              <v-btn type="submit" @click="comment" color="primary">Enviar comentario</v-btn>
+              <v-layout xs12 justify-end>
+                <v-btn type="submit" color="primary" @click="toComment"  >Enviar comentario</v-btn>
+              </v-layout>
             </form>
            </v-flex>
         </v-layout>
@@ -75,6 +77,7 @@
 
 <script>
 import axios from "axios";
+import { mapState } from 'vuex'
 
 export default {
   head() {
@@ -86,6 +89,17 @@ export default {
     return { 
       }
     },
+  computed: {
+        comment:{
+          get () {
+            return this.$store.state.comment.comment;
+          },
+          set (value) {
+            console.log(" set computed");
+            this.$store.dispatch('comment/store', value);
+          }
+        }
+  },    
   async asyncData ({ params, error, payload }) {
     if (payload) return { item: payload, slug: params.slug}
     else
@@ -95,21 +109,28 @@ export default {
           id: "",
           name: "",
           city: ""
-        }, slug: params.slug
+        }, 
+        slug: params.slug
     };
   },
   async fetch({ store, params  }) {
     await store.dispatch('business/show', {slug: params.slug});
+    await store.dispatch('auth/fetch');
+    if (store.state.auth.user != null) {
+      await store.dispatch('comment/getFromUser', {slug:params.slug, unique_id: store.state.auth.user.unique_id});  
+    }
   },
   mounted() {
      if (this.$store.state.auth.user==null){
         this.$router.push({ name: 'login', query: { redirect: '/login' } });
-      } else {
-        this.$store.dispatch('comment/getFromUser', {slug:this.slug, unique_id: this.$store.state.auth.user.unique_id});  
-      }
+      } 
   },
   methods: {
-     async comment() {
+     async toComment() {
+       console.log("en method " + this.comment.comment + this.comment.rating)
+       this.comment.encodedFiles = [];
+       this.comment.idEst = this.$store.state.business.business.idEst;
+       await this.$store.dispatch('comment/comment', {comment: this.comment});
      }
   }
 };

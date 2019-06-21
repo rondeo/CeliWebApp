@@ -41,6 +41,7 @@ module.exports = {
   */
   plugins: [
     '@/plugins/vuetify',
+    '@/plugins/googleMaps',
     '~/utils/init.js'
   ],
 
@@ -102,15 +103,7 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    extend(config, ctx) {
-      
-      if (ctx.isServer) {
-        config.externals = [
-          nodeExternals({
-            whitelist: [/^vuetify/]
-          })
-        ]
-      }
-    }
+
+   transpile: [/^vue2-google-maps($|\/)/]
   }
 }
