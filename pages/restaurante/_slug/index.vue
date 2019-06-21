@@ -41,7 +41,7 @@
                   <span class="black--text subheading"> Sin opiniones aún de este sitio </span>
               </v-layout>
               <v-layout  align-end justify-end v-if="$store.state.business.business.votes == 0 || $store.state.business.business.average == 999">
-                <v-flex  xs12 md6 d-flex  mt-1 align-end justify-end> 
+                <v-flex  xs12 md10 d-flex  mt-1 align-end justify-end> 
                   <v-btn class="primary justify-end" @click="comment()">
                     Escribe una opinión
                   </v-btn>
@@ -330,16 +330,6 @@ export default {
       }
     },
   async asyncData ({ params, error, payload }) {
-    if (payload) return { item: payload}
-    else
-    return {
-      item: 
-        {
-          id: "",
-          name: "",
-          city: ""
-        }
-    };
   },
   async fetch({ store, params  }) {
     await store.dispatch('business/show', {slug: params.slug});

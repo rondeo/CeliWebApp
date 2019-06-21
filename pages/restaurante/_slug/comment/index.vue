@@ -9,7 +9,7 @@
               <h3 class="black--text subheading" >  <nuxt-link class="black--text subheading" style="text-decoration: none;" :to="{ path :'/provincia/' + $store.state.business.business.stateSlug}">Opciones sin gluten en {{$store.state.business.business.stateName}} </nuxt-link> / <nuxt-link class="black--text subheading" style="text-decoration: none;" :to="{ path :'/ciudad/' + $store.state.business.business.citySlug}">{{$store.state.business.business.cityName}}</nuxt-link> / {{$store.state.business.business.kindName}} </h3>
             </v-layout>
             <v-layout mt-2  > 
-              <h1 class="display-3 black--text bold">{{$store.state.business.business.name}}</h1>
+              <h1 class="display-3 black--text bold"><a href="./"  style="text-decoration: none;" >{{$store.state.business.business.name}}</a></h1>
             </v-layout>
           </v-card-text>
           <v-layout  mt-1 >
@@ -49,9 +49,23 @@
         <v-layout xs12 align-center justify-center  mt-4 pt-4>
            <v-flex xs12 md8 align-center justify-center>
             <p class="display-1 black--text bold align-center justify-center">Tu opinión sobre {{$store.state.business.business.name}}</p>
-           <form  method="post" xs12  mt-4 pt-4  >
+                <v-alert
+                  dismissible
+                  :value="alert"
+                  type="success"
+                >
+                  ¡Tu opinión ha sido registrada!
+                </v-alert>
+                <v-alert
+                  dismissible
+                  :value="errorA"
+                  color="error"
+                >
+                  Ha ocurrido un error, por favor, vuelve a intentarlo
+                </v-alert>
+           <form  method="post" xs12  mt-4 pt-4  @submit.prevent="toComment(comment  )" >
              <v-card-text xs12 mt-4>
-                  <v-textarea  data-vv-name="comment" v-validate="'max:1000'" v-model="comment.comment"  name="comment" label="Tu Opinión" type="text" :counter=1000></v-textarea>
+                  <v-textarea  data-vv-name="comment"  v-model="comment.comment"  name="comment" label="Tu Opinión" type="text" :counter=1000></v-textarea>
                   <v-flex mt-3 pt-3>
                    <v-slider mt-3 pt-3
                     v-model="comment.rating"
@@ -62,8 +76,9 @@
                   ></v-slider>
                   </v-flex>
               </v-card-text>
+              <input type="hidden" v-model="comment.idEst" >
               <v-layout xs12 justify-end>
-                <v-btn type="submit" color="primary" @click="toComment"  >Enviar comentario</v-btn>
+                <v-btn type="submit" color="primary" >Enviar comentario</v-btn>
               </v-layout>
             </form>
            </v-flex>
@@ -77,7 +92,7 @@
 
 <script>
 import axios from "axios";
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   head() {
@@ -87,32 +102,11 @@ export default {
   },
   data() {
     return { 
+      comment: this.$store.state.comment.comment,
+      alert: false,
+      errorA: false
       }
-    },
-  computed: {
-        comment:{
-          get () {
-            return this.$store.state.comment.comment;
-          },
-          set (value) {
-            console.log(" set computed");
-            this.$store.dispatch('comment/store', value);
-          }
-        }
   },    
-  async asyncData ({ params, error, payload }) {
-    if (payload) return { item: payload, slug: params.slug}
-    else
-    return {
-      item: 
-        {
-          id: "",
-          name: "",
-          city: ""
-        }, 
-        slug: params.slug
-    };
-  },
   async fetch({ store, params  }) {
     await store.dispatch('business/show', {slug: params.slug});
     await store.dispatch('auth/fetch');
@@ -126,11 +120,22 @@ export default {
       } 
   },
   methods: {
-     async toComment() {
-       console.log("en method " + this.comment.comment + this.comment.rating)
-       this.comment.encodedFiles = [];
-       this.comment.idEst = this.$store.state.business.business.idEst;
-       await this.$store.dispatch('comment/comment', {comment: this.comment});
+     ...mapActions({
+        commentStore: 'comment/comment'
+     }),
+     async toComment(comment) {
+       this.alert = false
+       this.errorA = false
+       comment.idEst = this.$store.state.business.business.id
+       comment.unique_id = this.$store.state.auth.user.unique_id
+       console.log(comment.idEst)
+       await this.commentStore(comment);
+       if (!this.$store.state.comment.error){
+          this.alert =!this.alert
+          this.$nuxt.$router.push({ path: '/restaurante/' + this.$store.state.business.business.slug } );
+       } else {
+         this.errorA = !this.errorA
+       }
      }
   }
 };

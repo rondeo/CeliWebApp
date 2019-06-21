@@ -6,6 +6,7 @@ export const strict = false
 export const state = () => ({
   list: [],
   comment: {},
+  error: false
 });
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
     state.list = business
   },
   merge(state, form) {
+    if (form.rating == null) {
+      form.rating = 0
+    }
     assign(state.comment, form)
   },
   remove(state, form) {
@@ -22,6 +26,9 @@ export const mutations = {
       idEst: form.idEst,
       comment: ""
     };
+  },
+  setError(state, form) {
+    state.error = form;
   }
 };
 
@@ -43,6 +50,8 @@ export const actions = {
       }).catch(
         error => {
           console.log("no comment")
+          params.comment = ""
+          params.rating = 0
           commit('remove', params);
         }
     );
@@ -51,12 +60,19 @@ export const actions = {
     commit('merge', res.data)
   },
   async comment({commit}, params) {
-    params.comment.tim = null;
-    await this.$axios.post(`/api/comment/auth`, params.comment)
+    commit('setError', false)
+    console.log("en method " + params.comment + params.rating)
+    params.encodedFiles = [];
+    params.tim = null;
+    await this.$axios.post(`/api/comment/auth`, params)
       .then((res) => {
         if (res.status === 200) {
           commit('merge', res.data)
         }
-      })
+      }).catch(
+        error => {
+          commit('setError', true)
+        }
+      )
   }
 };
