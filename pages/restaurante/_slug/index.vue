@@ -28,7 +28,7 @@
           </v-layout>
           <v-layout row mt-2 pt-3  xs12 md4  >
             <v-flex >
-              <v-layout justify-end  pr-2 v-if="$store.state.business.business.votes > 0" id="rating">
+              <v-layout justify-end  pr-2 v-if="$store.state.business.business.votes > 0 && $store.state.business.business.average < 999" id="rating">
                   <span class="primary--text display-2 bold"  style="font-size: 40px !important;">{{ $store.state.business.business.average }} </span><span class ="ml-2 black--text headline">  / 10</span>
               </v-layout>
               <v-layout justify-end  v-if="$store.state.business.business.votes > 0 && $store.state.business.business.average < 999">
