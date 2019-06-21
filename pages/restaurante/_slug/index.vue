@@ -71,20 +71,16 @@
                 <v-layout xs12 wrap justify-center v-if="$store.state.image.list.length > 0" >
                   <v-flex xs12 >
                     <v-layout wrap ma-0 pa-0 justify-left >
-                        <v-flex d-flex 
+                        <v-flex
                           v-for="(image,index) in $store.state.image.list.slice(0, 4)"
                           v-bind:key="image.id"
-                          xs6 md6 pa-0 wrap :class="{'ma-0': $vuetify.breakpoint.smAndDown, 'ma-0': $vuetify.breakpoint.mdAndUp}"
+                          xs6 md6 pa-0 wrap height="200px"  :class="{'ma-0': $vuetify.breakpoint.smAndDown, 'ma-0': $vuetify.breakpoint.mdAndUp}"
                         >     
-                        <v-flex ma-0 pa-0 d-flex>       
-                          <v-layout align-baseline justify-center>       
                             <v-img  :src=image.uri class="image ma-0 pa-0" :alt=$store.state.business.business.name width="100%" height="200px" hover>
                             <v-layout v-if="(index == 3 && morePhotos.length == 0)" style="height: 100%;" align-end justify-center >
                               <v-btn class="primary"  @click="clickPhotos()">Ver más fotos</v-btn>
                             </v-layout>
                             </v-img>
-                          </v-layout>
-                        </v-flex>
                         </v-flex>
                       </v-layout>
                   </v-flex>
@@ -100,7 +96,6 @@
                           v-bind:key="image.id"
                           xs3 pa-0 wrap :class="{'ma-0': $vuetify.breakpoint.smAndDown, 'ma-0': $vuetify.breakpoint.mdAndUp}"
                         >
-                        <v-layout align-baseline justify-center>    
                           <v-img :src=image.uri class="image ma-0 pa-0" :alt=$store.state.business.business.name width="100%" height="200px" hover>
                           <v-layout v-if="(index2 == morePhotos.length - 1 && morePhotos.length + 4 < $store.state.image.list.length)" style="height: 100%;" align-end justify-center >
                             <v-btn class="primary"  @click="clickPhotos()">Ver más fotos</v-btn>
@@ -109,7 +104,6 @@
                             <v-btn class="accent"  @click="hidePhotos()">Ocultar fotos</v-btn>
                           </v-layout>
                           </v-img>
-                        </v-layout>
                         </v-flex>
                       </v-layout>
                   </v-flex>
