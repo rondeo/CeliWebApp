@@ -42,6 +42,7 @@ module.exports = {
   plugins: [
     '@/plugins/vuetify',
     '@/plugins/googleMaps',
+    '@/plugins/moment.js',
     '~/utils/init.js'
   ],
 
@@ -50,8 +51,18 @@ module.exports = {
   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/sitemap'
   ],
+
+  sitemap: {
+    routes() {
+      routes;
+    },
+    path: '/sitemap.xml',
+    gzip: true,
+    generate: true,
+  },
   /*
   ** Axios module configuration
   */

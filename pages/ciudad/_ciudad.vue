@@ -1,7 +1,7 @@
 <template >
  <v-layout x12 row wrap  align-center justify-center>
      <v-layout xs12 mt-3 mb-3 align-center justify-center>
-          <h1 class="display-5 black--text bold ">Restaurantes sin gluten en la ciudad de {{$store.state.city.city.name}}</h1>
+          <h1 class="display-5 black--text bold ">Restaurantes sin gluten en {{$store.state.city.city.name}}</h1>
      </v-layout>
     <ListBusiness></ListBusiness>
     <v-layout mt-4 mb-4 align-center justify-center v-if="$store.state.business.total > 30">

@@ -217,7 +217,7 @@
                                   </v-avatar></p>
                                   <v-flex ml-3 >
                                     <span class="title bold primary--text" >{{comment.firstName}} {{comment.lastName}}</span><br>
-                                    <span class="caption" mt-0>{{comment.tim}}</span>
+                                    <span class="caption" mt-0>{{comment.tim | formatDate}}</span>
                                   </v-flex>
                                   <v-flex mt-0 mb-0 :class="{'mr-2': $vuetify.breakpoint.smAndDown, 'mr-5': $vuetify.breakpoint.mdAndUp}" justify-right text-xs-right>
                                     <span class="display-1 primaryLight--text bold" justify-right text-xs-right>{{comment.rating}}</span>
