@@ -9,7 +9,7 @@ export const state = () => ({
       store.user = data
     },
     reset_user (store) {
-      store.user = {}
+      store.user = null
     }
   }
   export const actions = {
