@@ -225,7 +225,7 @@
                                   </v-layout>
                                 </v-flex>
                                 <v-layout>
-                                <v-flex mt-4 mb-0 ml-4 mr-4 v-if="comment.comment != null && comment.comment.length > 1">
+                                <v-flex mt-2 mb-0 ml-4 mr-4 v-if="comment.comment != null && comment.comment.length > 1">
                                   <span class="body-1">{{comment.comment}}</span>
                                 </v-flex>
                                 </v-layout>

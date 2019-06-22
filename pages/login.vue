@@ -50,13 +50,18 @@ export default {
         email: this.email,
         password: this.password
       }).then(result => {
-         
+        this.fetch()
       }).catch(error => {
         this.loading = false
         if (error.response && error.response.data) {
           this.alert = {type: 'error', message: error.response.data.message || error.reponse.status}
         }
       })
+      } catch (e) {
+        this.error = e.response
+      }
+    },
+    async fetch(){
       await this.$store.dispatch('auth/fetch')
         .then(result => {
           
@@ -64,9 +69,6 @@ export default {
                   path: this.$router.back()
               }) 
         })
-      } catch (e) {
-        this.error = e.response
-      }
     }
   }
 }

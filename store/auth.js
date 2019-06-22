@@ -9,7 +9,7 @@ export const state = () => ({
       store.user = data
     },
     reset_user (store) {
-      store.user = null
+      store.user = {}
     }
   }
   export const actions = {
@@ -27,14 +27,19 @@ export const state = () => ({
     async login ({commit}, data) {
        await this.$axios.post('/api/auth/token/', data)
         .then(response => {
-          commit('set_user', response.data.token)
           setAuthToken(response.data.token)
+          this.$axios.defaults.headers.common['x-access-token'] = response.data.token
+          this.$axios.defaults.headers.common['Authorization'] = response.data.token
           cookies.set('x-access-token', response.data.token, {expires: 7})
+          commit('set_user', response.data.token)
+          return response
         })
     },
     async reset ({commit}) {
       commit('reset_user')
       resetAuthToken()
+      delete this.$axios.defaults.headers.common['x-access-token']
+      delete this.$axios.defaults.headers.common['Authorization']
       cookies.remove('x-access-token')
       return Promise.resolve()
     }
